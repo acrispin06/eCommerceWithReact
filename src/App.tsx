@@ -1,40 +1,21 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { ProductList } from './product/interface/ProductList'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { LoginForm } from './auth/interface/LoginForm'
-import { useAuth } from './auth/AuthContext'
-import {PrivateRoute} from "./auth/PrivateRoute.tsx";
-import {ProductDetailWrapper} from "./product/interface/ProductDetailWrapper.tsx";
+import { ProductList } from './product/interface/ProductList'
+import { ProductDetailWrapper } from './product/interface/ProductDetailWrapper'
+import { ProtectedLayout } from './shared/layout/ProtectedLayout'
 
 function App() {
-    const { token, login, logout } = useAuth()
-    const navigate = useNavigate()
-
     return (
-        <div>
-            {token && (
-                <button onClick={() => { logout(); navigate('/login', { replace: true }) }}>
-                    Logout
-                </button>
-            )}
+        <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<LoginForm />} />
 
-            <Routes>
-                <Route path="/" element={<Navigate to="/login" replace />} />
-                <Route path="/login" element={<LoginForm onLogin={(t) => {
-                    login(t)
-                    navigate('/products', { replace: true })
-                }} />} />
-                <Route path="/products" element={
-                    <PrivateRoute>
-                        <ProductList onSelectProduct={() => {}} />
-                    </PrivateRoute>
-                } />
-                <Route path="/products/:id" element={
-                    <PrivateRoute>
-                        <ProductDetailWrapper />
-                    </PrivateRoute>
-                } />
-            </Routes>
-        </div>
+            <Route element={<ProtectedLayout />}>
+                <Route path="/products" element={<ProductList />} />
+                <Route path="/products/:id" element={<ProductDetailWrapper />} />
+
+            </Route>
+        </Routes>
     )
 }
 
