@@ -1,0 +1,37 @@
+import React from 'react'
+import { Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material'
+import type {Product} from "../domain/Product.ts";
+import { useNavigate } from 'react-router-dom'
+
+interface Props {
+    product: Product
+}
+
+export const ProductCard: React.FC<Props> = ({ product }) => {
+    const navigate = useNavigate()
+
+    return (
+        <Card sx={{ maxWidth: 300, height: '100%', margin: 'auto' }} onClick={() => navigate(`/products/${product.id}`)}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    image={product.image}
+                    alt={product.title}
+                    height="140"
+                    sx={{ objectFit: 'contain', padding: 2 }}
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="subtitle1" component="div" noWrap>
+                        {product.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                        {product.rating.rate.toFixed(1)} ({product.rating.count} reviews)
+                    </Typography>
+                    <Typography variant="body1" color="text.primary" noWrap sx={{ fontWeight: 'bold' }}>
+                        S/. {product.price.toFixed(2)}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
+    )
+}

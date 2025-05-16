@@ -1,64 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { getAllProducts } from '../application/fetchProducts'
 import type { Product } from '../domain/Product.ts'
-import { useNavigate } from 'react-router-dom'
+import { ProductCard } from './ProductCard'
+import { Grid } from '@mui/material'
 
 export const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([])
-    const navigate = useNavigate()
 
     useEffect(() => {
         getAllProducts().then(setProducts)
     }, [])
 
     return (
-        <div style={styles.grid}>
-            {products.map(product => (
-                <div
-                    key={product.id}
-                    style={styles.card}
-                    onClick={() => navigate(`/products/${product.id}`)}
-                >
-                    <img src={product.image} alt={product.title} style={styles.image} />
-                    <h3 style={styles.title}>{product.title}</h3>
-                    <p style={styles.price}>S/ {product.price.toFixed(2)}</p>
-                </div>
+        <Grid container spacing={3} padding={4}>
+            {products.map((product: Product) => (
+                <Grid  size={{ xs: 12, md: 4, sm: 6, lg:3 }} key={product.id}>
+                    <ProductCard product={product} />
+                </Grid>
             ))}
-        </div>
+        </Grid>
     )
-}
-
-const styles: { [key: string]: React.CSSProperties } = {
-    grid: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '16px',
-        padding: '20px',
-    },
-    card: {
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        padding: '12px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        textAlign: 'center',
-        cursor: 'pointer',
-        transition: 'transform 0.2s',
-    },
-    image: {
-        height: '140px',
-        width: '80%',
-        objectFit: 'contain',
-        marginBottom: '12px',
-    },
-    title: {
-        fontSize: '16px',
-        height: '40px',
-        overflow: 'hidden',
-        padding: '12px',
-        color: '#000000',
-    },
-    price: {
-        fontWeight: 'bold',
-        color: '#2c3e50',
-    },
 }
