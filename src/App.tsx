@@ -3,6 +3,7 @@ import { ProductList } from './product/interface/ProductList'
 import { LoginForm } from './auth/interface/LoginForm'
 import { useAuth } from './auth/AuthContext'
 import {PrivateRoute} from "./auth/PrivateRoute.tsx";
+import {ProductDetailWrapper} from "./product/interface/ProductDetailWrapper.tsx";
 
 function App() {
     const { token, login, logout } = useAuth()
@@ -25,6 +26,11 @@ function App() {
                 <Route path="/products" element={
                     <PrivateRoute>
                         <ProductList onSelectProduct={() => {}} />
+                    </PrivateRoute>
+                } />
+                <Route path="/products/:id" element={
+                    <PrivateRoute>
+                        <ProductDetailWrapper />
                     </PrivateRoute>
                 } />
             </Routes>

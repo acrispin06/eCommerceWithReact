@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getAllProducts } from '../application/fetchProducts'
-import type {Product} from "../domain/Product.ts";
+import type { Product } from '../domain/Product.ts'
+import { useNavigate } from 'react-router-dom'
 
-interface Props {
-    onSelectProduct: (product: Product) => void
-}
-
-export const ProductList: React.FC<Props> = ({ onSelectProduct }) => {
+export const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         getAllProducts().then(setProducts)
@@ -19,7 +17,7 @@ export const ProductList: React.FC<Props> = ({ onSelectProduct }) => {
                 <div
                     key={product.id}
                     style={styles.card}
-                    onClick={() => onSelectProduct(product)}
+                    onClick={() => navigate(`/products/${product.id}`)}
                 >
                     <img src={product.image} alt={product.title} style={styles.image} />
                     <h3 style={styles.title}>{product.title}</h3>
@@ -44,13 +42,13 @@ const styles: { [key: string]: React.CSSProperties } = {
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         textAlign: 'center',
         cursor: 'pointer',
-        transition: 'transform 0.2s'
+        transition: 'transform 0.2s',
     },
     image: {
         height: '140px',
         width: '80%',
         objectFit: 'contain',
-        marginBottom: '12px'
+        marginBottom: '12px',
     },
     title: {
         fontSize: '16px',
@@ -61,6 +59,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     },
     price: {
         fontWeight: 'bold',
-        color: '#2c3e50'
+        color: '#2c3e50',
     },
 }
