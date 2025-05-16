@@ -11,17 +11,18 @@ export const LoginForm: React.FC<{ onLogin: (token: string) => void }> = ({ onLo
         try {
             const res = await loginUser({ username, password })
             onLogin(res.token)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
-            setError('Usuario o contraseña incorrectos')
+            setError('Username or password incorrect')
         }
     }
 
     return (
         <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
-            <h2>Iniciar sesión</h2>
+            <h2>Log In</h2>
             <input
                 type="text"
-                placeholder="Usuario"
+                placeholder="Username"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 required
@@ -29,14 +30,14 @@ export const LoginForm: React.FC<{ onLogin: (token: string) => void }> = ({ onLo
             />
             <input
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
                 style={{ width: '100%', padding: 8, marginBottom: 10 }}
             />
             <button type="submit" style={{ width: '100%', padding: 10 }}>
-                Entrar
+                Log in
             </button>
             {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
         </form>
