@@ -10,6 +10,7 @@ import {
     Rating
 } from '@mui/material'
 import type {Product} from "../domain/Product.ts";
+import { useCart } from '../../cart/cartContext.tsx'
 
 interface Props {
     product: Product
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
+    const { addItem } = useCart()
+
     return (
         <Box padding={4}>
             <Button variant="outlined" onClick={onBack} sx={{ mb: 2 }}>
@@ -67,7 +70,11 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                                 {product.description}
                             </Typography>
 
-                            <Button variant="contained" color="primary">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => addItem({ ...product, quantity: 1 })}
+                            >
                                 Agregar al carrito
                             </Button>
                         </CardContent>
