@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../auth/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { FaShoppingCart, FaUserCircle } from 'react-icons/fa'
 
 export const Navbar: React.FC = () => {
     const { user, logout } = useAuth()
@@ -19,10 +20,10 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div style={styles.icons}>
-                <span style={styles.icon} onClick={() => navigate('/cart')}>cart</span>
+                <FaShoppingCart style={styles.icon} onClick={() => navigate('/cart')} />
 
                 <div style={styles.userMenu}>
-                    <span style={styles.icon} onClick={() => setDropdownOpen(!dropdownOpen)}>user</span>
+                    <FaUserCircle style={styles.icon} onClick={() => setDropdownOpen(!dropdownOpen)} />
                     {dropdownOpen && (
                         <div style={styles.dropdown}>
                             <p style={{ margin: 0 }}>{user?.email}</p>
