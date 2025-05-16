@@ -1,7 +1,8 @@
 import React from 'react'
-import { Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material'
-import type {Product} from "../domain/Product.ts";
+import {Card, CardMedia, CardContent, Typography, CardActionArea, Button, CardActions} from '@mui/material'
+import type {Product} from "../domain/Product.ts"
 import { useNavigate } from 'react-router-dom'
+import { useCart } from '../../cart/cartContext.tsx'
 
 interface Props {
     product: Product
@@ -9,6 +10,7 @@ interface Props {
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
     const navigate = useNavigate()
+    const { addItem } = useCart()
 
     return (
         <Card sx={{ maxWidth: 300, height: '100%', margin: 'auto' }} onClick={() => navigate(`/products/${product.id}`)}>
@@ -20,6 +22,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                     height="140"
                     sx={{ objectFit: 'contain', padding: 2 }}
                 />
+
                 <CardContent>
                     <Typography gutterBottom variant="subtitle1" component="div" noWrap>
                         {product.title}
@@ -32,6 +35,12 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                     </Typography>
                 </CardContent>
             </CardActionArea>
+
+            <CardActions>
+                <Button size="small" color="primary" onClick={() => addItem({ ...product, quantity: 1 })}>
+                    Agregar al carrito
+                </Button>
+            </CardActions>
         </Card>
     )
 }

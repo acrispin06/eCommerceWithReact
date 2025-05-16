@@ -6,7 +6,8 @@ import {
     Typography,
     Button,
     Grid,
-    Box
+    Box,
+    Rating
 } from '@mui/material'
 import type {Product} from "../domain/Product.ts";
 
@@ -49,6 +50,18 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                             <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }} gutterBottom>
                                 S/ {product.price.toFixed(2)}
                             </Typography>
+
+                            <Box display="flex" alignItems="center" gap={1} mb={2}>
+                                <Rating
+                                    name="read-only"
+                                    value={product.rating?.rate || 0}
+                                    precision={0.1}
+                                    readOnly
+                                />
+                                <Typography variant="body2" color="text.secondary">
+                                    ({product.rating?.count ?? 0} valoraciones)
+                                </Typography>
+                            </Box>
 
                             <Typography variant="body1" paragraph>
                                 {product.description}
