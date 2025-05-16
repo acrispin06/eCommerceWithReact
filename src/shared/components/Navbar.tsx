@@ -1,12 +1,21 @@
 import React, { useState } from 'react'
-import { useAuth } from '../../auth/AuthContext'
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Badge, Box } from '@mui/material'
+import { ShoppingCart, AccountCircle } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { FaShoppingCart, FaUserCircle } from 'react-icons/fa'
+import { useAuth } from '../../auth/AuthContext'
 
 export const Navbar: React.FC = () => {
     const { user, logout } = useAuth()
-    const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const navigate = useNavigate()
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleMenuClose = () => {
+        setAnchorEl(null)
+    }
 
     const handleLogout = () => {
         logout()
@@ -14,71 +23,33 @@ export const Navbar: React.FC = () => {
     }
 
     return (
-        <nav style={styles.navbar}>
-            <div>
-                <span style={styles.welcome}>Welcome back, {user?.name.firstname}</span>
-            </div>
+        <AppBar position="sticky" sx={{ backgroundColor: '#212121' }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography variant="h6">
+                    Welcome back, {user?.name.firstname}
+                </Typography>
 
-            <div style={styles.icons}>
-                <FaShoppingCart style={styles.icon} onClick={() => navigate('/cart')} />
+                <Box>
+                    <IconButton color="inherit" onClick={() => navigate('/cart')}>
+                        <Badge badgeContent={0} color="error">
+                            <ShoppingCart />
+                        </Badge>
+                    </IconButton>
 
-                <div style={styles.userMenu}>
-                    <FaUserCircle style={styles.icon} onClick={() => setDropdownOpen(!dropdownOpen)} />
-                    {dropdownOpen && (
-                        <div style={styles.dropdown}>
-                            <p style={{ margin: 0 }}>{user?.email}</p>
-                            <button onClick={handleLogout} style={styles.logoutBtn}>Logout</button>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </nav>
+                    <IconButton color="inherit" onClick={handleMenuOpen}>
+                        <AccountCircle />
+                    </IconButton>
+
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                    >
+                        <MenuItem disabled>{user?.email}</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    </Menu>
+                </Box>
+            </Toolbar>
+        </AppBar>
     )
-}
-
-const styles: { [key: string]: React.CSSProperties } = {
-    navbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: '#212121',
-        color: 'white',
-        padding: '10px 20px',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-    },
-    welcome: {
-        fontSize: '16px',
-        fontWeight: 'bold',
-    },
-    icons: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '20px',
-    },
-    icon: {
-        cursor: 'pointer',
-        fontSize: '22px',
-    },
-    userMenu: {
-        position: 'relative',
-    },
-    dropdown: {
-        position: 'absolute',
-        top: '30px',
-        right: 0,
-        background: '#fff',
-        color: '#000',
-        borderRadius: '6px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-        padding: '10px',
-        minWidth: '160px',
-    },
-    logoutBtn: {
-        marginTop: '8px',
-        padding: '6px 12px',
-        width: '100%',
-        cursor: 'pointer',
-    },
 }
