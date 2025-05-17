@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
+    Box,
+    Button,
     Card,
     CardContent,
     CardMedia,
-    Typography,
-    Button,
     Grid,
-    Box,
-    Rating
+    Rating,
+    Typography,
+    IconButton
 } from '@mui/material'
-import type {Product} from "../domain/Product.ts";
-import { useCart } from '../../cart/cartContext.tsx'
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getAllProducts } from "../application/fetchProducts.ts";
+import { Add, Remove } from '@mui/icons-material'
+import { useCart } from '../../cart/cartContext'
+import { useNavigate } from 'react-router-dom'
+import { getAllProducts } from '../application/fetchProducts'
+import type { Product } from '../domain/Product'
 
 interface Props {
     product: Product
@@ -22,7 +23,7 @@ interface Props {
 
 export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
     const { addItem } = useCart()
-
+    const [quantity, setQuantity] = useState(1)
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
     const navigate = useNavigate()
 
@@ -34,6 +35,9 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
             setRelatedProducts(related)
         })
     }, [product])
+
+    const increaseQty = () => setQuantity(prev => prev + 1)
+    const decreaseQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1))
 
     return (
         <Box padding={4}>
@@ -47,7 +51,6 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
 
             <Card sx={{ padding: 2 }}>
                 <Grid container spacing={3}>
-                    {/* Image */}
                     <Grid size={{ xs: 12, md: 5}}>
                         <CardMedia
                             component="img"
@@ -58,7 +61,6 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                         />
                     </Grid>
 
-                    {/* Details */}
                     <Grid size={{ xs: 12, md: 7}}>
                         <CardContent>
                             <Typography variant="h5" gutterBottom>
@@ -89,10 +91,21 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                                 {product.description}
                             </Typography>
 
+                            {/* Quantity controls */}
+                            <Box display="flex" alignItems="center" gap={1} mb={2}>
+                                <IconButton onClick={decreaseQty} color="primary">
+                                    <Remove />
+                                </IconButton>
+                                <Typography>{quantity}</Typography>
+                                <IconButton onClick={increaseQty} color="primary">
+                                    <Add />
+                                </IconButton>
+                            </Box>
+
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => addItem({ ...product, quantity: 1 })}
+                                onClick={() => addItem({ ...product, quantity })}
                             >
                                 Add to shopping cart
                             </Button>
@@ -109,7 +122,7 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
 
                     <Grid container spacing={2}>
                         {relatedProducts.map(rp => (
-                            <Grid size={{ xs: 12, md:4, sm:6, lg:3 }} key={rp.id}>
+                            <Grid size={{ xs: 12, md: 4, sm:6, lg:3}} key={rp.id}>
                                 <Card
                                     onClick={() => navigate(`/products/${rp.id}`)}
                                     sx={{ cursor: 'pointer', height: '100%' }}
@@ -135,7 +148,6 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                     </Grid>
                 </Box>
             )}
-
         </Box>
     )
 }

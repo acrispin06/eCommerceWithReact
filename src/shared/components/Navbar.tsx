@@ -11,7 +11,6 @@ import {
     Drawer,
     List,
     ListItem,
-    ListItemText,
     Divider,
     Button
 } from '@mui/material'
@@ -24,8 +23,8 @@ export const Navbar: React.FC = () => {
     const { user, logout } = useAuth()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const navigate = useNavigate()
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    const { cartItems, getTotal, getItemCount, removeItem, clearCart } = useCart()
+    const [ drawerOpen, setDrawerOpen ] = useState(false)
+    const { cartItems, getTotal, getItemCount, addItem, removeItem, clearCart, decreaseItemQuantity } = useCart()
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget)
@@ -72,7 +71,7 @@ export const Navbar: React.FC = () => {
             </AppBar>
 
             <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                <Box sx={{ width: 350, padding: 2 }}>
+                <Box sx={{ width: 400, padding: 2 }}>
                     <Typography variant="h6" gutterBottom>Your Cart</Typography>
 
                     {cartItems.length === 0 ? (
@@ -81,19 +80,52 @@ export const Navbar: React.FC = () => {
                         <>
                             <List>
                                 {cartItems.map(item => (
-                                    <ListItem
-                                        key={item.id}
-                                        divider
-                                        secondaryAction={
-                                            <IconButton edge="end" onClick={() => removeItem(item.id)}>
-                                                <Delete />
+                                    <ListItem key={item.id} alignItems="flex-start" divider>
+                                        <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+                                            {/* Image */}
+                                            <img
+                                                src={item.image}
+                                                alt={item.title}
+                                                style={{ width: 64, height: 64, objectFit: 'contain' }}
+                                            />
+
+                                            {/* Details */}
+                                            <Box sx={{ flexGrow: 1 }}>
+                                                <Typography variant="subtitle2" noWrap>
+                                                    {item.title}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    S/ {item.price.toFixed(2)} x {item.quantity}
+                                                </Typography>
+                                                <Typography variant="body2" fontWeight="bold">
+                                                    Subtotal: S/ {(item.price * item.quantity).toFixed(2)}
+                                                </Typography>
+
+                                                {/* Quantity Controls */}
+                                                <Box mt={1} display="flex" alignItems="center" gap={1}>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => decreaseItemQuantity(item.id)}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                    <Typography variant="body2">{item.quantity}</Typography>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => addItem({ ...item, quantity: 1 })}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                </Box>
+                                            </Box>
+
+                                            {/* Delete */}
+                                            <IconButton onClick={() => removeItem(item.id)}>
+                                                <Delete fontSize="small" />
                                             </IconButton>
-                                        }
-                                    >
-                                        <ListItemText
-                                            primary={`${item.title} (x${item.quantity})`}
-                                            secondary={`S/ ${(item.price * item.quantity).toFixed(2)}`}
-                                        />
+                                        </Box>
                                     </ListItem>
                                 ))}
                             </List>
@@ -107,10 +139,14 @@ export const Navbar: React.FC = () => {
                                 <Button variant="outlined" color="error" onClick={clearCart}>
                                     Empty cart
                                 </Button>
-                                <Button variant="contained" color="primary" onClick={() => {
-                                    setDrawerOpen(false)
-                                    navigate('/cart')
-                                }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => {
+                                        setDrawerOpen(false)
+                                        navigate('/cart')
+                                    }}
+                                >
                                     Go to complete cart
                                 </Button>
                             </Box>
