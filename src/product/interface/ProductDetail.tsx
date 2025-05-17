@@ -11,6 +11,9 @@ import {
 } from '@mui/material'
 import type {Product} from "../domain/Product.ts";
 import { useCart } from '../../cart/cartContext.tsx'
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAllProducts } from "../application/fetchProducts.ts";
 
 interface Props {
     product: Product
@@ -20,11 +23,27 @@ interface Props {
 export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
     const { addItem } = useCart()
 
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        getAllProducts().then(all => {
+            const related = all.filter(
+                p => p.category === product.category && p.id !== product.id
+            )
+            setRelatedProducts(related)
+        })
+    }, [product])
+
     return (
         <Box padding={4}>
             <Button variant="outlined" onClick={onBack} sx={{ mb: 2 }}>
                 Go back
             </Button>
+
+            <Typography variant="h4" gutterBottom>
+                Product Details
+            </Typography>
 
             <Card sx={{ padding: 2 }}>
                 <Grid container spacing={3}>
@@ -81,6 +100,42 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                     </Grid>
                 </Grid>
             </Card>
+
+            {relatedProducts.length > 0 && (
+                <Box mt={5}>
+                    <Typography variant="h6" gutterBottom>
+                        Related products
+                    </Typography>
+
+                    <Grid container spacing={2}>
+                        {relatedProducts.map(rp => (
+                            <Grid size={{ xs: 12, md:4, sm:6, lg:3 }} key={rp.id}>
+                                <Card
+                                    onClick={() => navigate(`/products/${rp.id}`)}
+                                    sx={{ cursor: 'pointer', height: '100%' }}
+                                >
+                                    <CardMedia
+                                        component="img"
+                                        height="160"
+                                        image={rp.image}
+                                        alt={rp.title}
+                                        sx={{ objectFit: 'contain', p: 2 }}
+                                    />
+                                    <CardContent>
+                                        <Typography variant="subtitle1" noWrap>
+                                            {rp.title}
+                                        </Typography>
+                                        <Typography variant="body2" fontWeight="bold">
+                                            S/ {rp.price.toFixed(2)}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            )}
+
         </Box>
     )
 }
