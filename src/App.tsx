@@ -3,6 +3,7 @@ import { LoginForm } from './auth/interface/LoginForm'
 import { ProductList } from './product/interface/ProductList'
 import { ProductDetailWrapper } from './product/interface/ProductDetailWrapper'
 import { ProtectedLayout } from './shared/layout/ProtectedLayout'
+import {CartView} from "./cart/interface/cartView.tsx";
 
 function App() {
     return (
@@ -13,7 +14,7 @@ function App() {
             <Route element={<ProtectedLayout />}>
                 <Route path="/products" element={<ProductList />} />
                 <Route path="/products/:id" element={<ProductDetailWrapper />} />
-
+                <Route path="/cart" element={<CartView />} />
             </Route>
         </Routes>
     )

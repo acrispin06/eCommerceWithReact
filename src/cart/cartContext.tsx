@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import type { CartItem } from './domain/CartItem'
+import { addToCart } from './application/addToCart'
+import { removeFromCart } from './application/removeFromCart'
+import { getCartTotal } from './application/getCartTotal'
 
 interface CartContextType {
     cartItems: CartItem[]
@@ -26,25 +29,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [cartItems])
 
     const addItem = (item: CartItem) => {
-        setCartItems(prev => {
-            const found = prev.find(p => p.id === item.id)
-            if (found) {
-                return prev.map(p =>
-                    p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
-                )
-            }
-            return [...prev, { ...item, quantity: 1 }]
-        })
+        setCartItems(prev => addToCart(prev, item))
     }
 
     const removeItem = (productId: number) => {
-        setCartItems(prev => prev.filter(p => p.id !== productId))
+        setCartItems(prev => removeFromCart(prev, productId))
     }
 
     const clearCart = () => setCartItems([])
 
-    const getTotal = () =>
-        cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    const getTotal = () => getCartTotal(cartItems)
 
     return (
         <CartContext.Provider value={{ cartItems, addItem, removeItem, clearCart, getTotal }}>
