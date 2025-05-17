@@ -1,4 +1,3 @@
-// src/auth/interface/LoginForm.tsx
 import React, { useState } from 'react'
 import { loginUser } from '../application/loginUser'
 import { useAuth } from '../AuthContext'
@@ -38,10 +37,10 @@ export const LoginForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit} style={styles.form}>
-            <h2>Iniciar sesión</h2>
+            <h2>Log in</h2>
             <input
                 type="text"
-                placeholder="Usuario"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -49,13 +48,13 @@ export const LoginForm: React.FC = () => {
             />
             <input
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 style={styles.input}
             />
-            <button type="submit" style={styles.button}>Entrar</button>
+            <button type="submit" style={styles.button}>LogIn</button>
             {error && <p style={styles.error}>{error}</p>}
         </form>
     )

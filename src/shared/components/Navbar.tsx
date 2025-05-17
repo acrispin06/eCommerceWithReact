@@ -73,10 +73,10 @@ export const Navbar: React.FC = () => {
 
             <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
                 <Box sx={{ width: 350, padding: 2 }}>
-                    <Typography variant="h6" gutterBottom>Tu carrito</Typography>
+                    <Typography variant="h6" gutterBottom>Your Cart</Typography>
 
                     {cartItems.length === 0 ? (
-                        <Typography variant="body2">El carrito está vacío.</Typography>
+                        <Typography variant="body2">Your cart is empty</Typography>
                     ) : (
                         <>
                             <List>
@@ -105,13 +105,13 @@ export const Navbar: React.FC = () => {
 
                             <Box display="flex" flexDirection="column" gap={1}>
                                 <Button variant="outlined" color="error" onClick={clearCart}>
-                                    Vaciar carrito
+                                    Empty cart
                                 </Button>
                                 <Button variant="contained" color="primary" onClick={() => {
-                                    alert('Pasarela de pagos aún no implementada')
                                     setDrawerOpen(false)
+                                    navigate('/cart')
                                 }}>
-                                    Ir a pagar
+                                    Go to complete cart
                                 </Button>
                             </Box>
                         </>

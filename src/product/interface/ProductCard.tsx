@@ -45,7 +45,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                         addItem({ ...product, quantity: 1 })
                     }}
                 >
-                    Agregar al carrito
+                    Add to shopping cart
                 </Button>
             </Box>
         </Card>

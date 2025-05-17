@@ -23,7 +23,7 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
     return (
         <Box padding={4}>
             <Button variant="outlined" onClick={onBack} sx={{ mb: 2 }}>
-                Volver
+                Go back
             </Button>
 
             <Card sx={{ padding: 2 }}>
@@ -75,7 +75,7 @@ export const ProductDetail: React.FC<Props> = ({ product, onBack }) => {
                                 color="primary"
                                 onClick={() => addItem({ ...product, quantity: 1 })}
                             >
-                                Agregar al carrito
+                                Add to shopping cart
                             </Button>
                         </CardContent>
                     </Grid>

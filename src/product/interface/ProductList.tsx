@@ -31,7 +31,7 @@ export const ProductList: React.FC = () => {
 
     return (
         <Box padding={4}>
-            <Typography variant="h5" gutterBottom>Productos</Typography>
+            <Typography variant="h5" gutterBottom>List of Products</Typography>
 
             {/* Filtros */}
             <Grid container spacing={2} marginBottom={3}>
