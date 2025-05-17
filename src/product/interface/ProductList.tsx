@@ -10,14 +10,15 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    Typography
+    Typography,
+    Slider
 } from '@mui/material'
 
 export const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([])
     const [searchTerm, setSearchTerm] = useState('')
     const [category, setCategory] = useState('')
-    const [minPrice, setMinPrice] = useState(0)
+    const [priceRange, setPriceRange] = useState<number[]>([0, 20000])
 
     useEffect(() => {
         getAllProducts().then(setProducts)
@@ -26,7 +27,8 @@ export const ProductList: React.FC = () => {
     const filteredProducts = products.filter(product =>
         product.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (category === '' || product.category === category) &&
-        product.price >= minPrice
+        product.price >= priceRange[0] &&
+        product.price <= priceRange[1]
     )
 
     return (
@@ -63,12 +65,15 @@ export const ProductList: React.FC = () => {
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 4}}>
-                    <TextField
-                        fullWidth
-                        type="number"
-                        label="Minimum Price"
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(Number(e.target.value))}
+                    <Typography gutterBottom>Price range (S/)</Typography>
+                    <Slider
+                        getAriaLabel={() => 'Price range'}
+                        value={priceRange}
+                        onChange={(_e, newValue) => setPriceRange(newValue as number[])}
+                        valueLabelDisplay="auto"
+                        min={0}
+                        max={2000}
+                        step={1}
                     />
                 </Grid>
             </Grid>
