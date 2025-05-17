@@ -2,7 +2,7 @@ import type {LoginPayload} from "../domain/LoginPayload.ts";
 
 export async function login(payload: LoginPayload): Promise<{ token: string }> {
     try {
-        const res = await fetch('https://fakestoreapi.com/auth/login', {
+        const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
