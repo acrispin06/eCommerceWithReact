@@ -8,15 +8,14 @@ import {
     IconButton,
     Button,
     Grid,
-    Divider,
-    Stack
+    Divider
 } from '@mui/material'
-import { Delete } from '@mui/icons-material'
+import { Delete, Add, Remove } from '@mui/icons-material'
 import { useCart } from '../cartContext'
 import { useNavigate } from 'react-router-dom'
 
 export const CartView: React.FC = () => {
-    const { cartItems, removeItem, clearCart, getTotal } = useCart()
+    const { cartItems, addItem, decreaseItemQuantity, removeItem, clearCart, getTotal } = useCart()
     const navigate = useNavigate()
 
     const handleCheckout = () => {
@@ -24,8 +23,8 @@ export const CartView: React.FC = () => {
     }
 
     return (
-        <Box px={4} py={6}>
-            <Button variant="outlined" onClick={() => navigate('/products')} sx={{ mb: 3 }}>
+        <Box padding={4}>
+            <Button variant="outlined" onClick={() => navigate('/products')} sx={{ mb: 2 }}>
                 Go back
             </Button>
 
@@ -37,60 +36,59 @@ export const CartView: React.FC = () => {
                 <Typography variant="body1">Your cart is empty.</Typography>
             ) : (
                 <>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         {cartItems.map(item => (
-                            <Grid size={{ xs: 12, md: 6, lg:4}} key={item.id}>
-                                <Card sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, height: '100%' }}>
+                            <Grid size={{xs:12, md:6, lg:4}} key={item.id}>
+                                <Card sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1 }}>
                                     <CardMedia
                                         component="img"
                                         image={item.image}
                                         alt={item.title}
-                                        sx={{
-                                            width: { xs: '100%', sm: 140 },
-                                            height: { xs: 200, sm: 'auto' },
-                                            objectFit: 'contain',
-                                            p: 2,
-                                            alignSelf: 'center'
-                                        }}
+                                        sx={{ width: 100, objectFit: 'contain', p: 1 }}
                                     />
-                                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                        <CardContent>
-                                            <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
+                                    <Box sx={{ flexGrow: 1 }}>
+                                        <CardContent sx={{ paddingBottom: '8px' }}>
+                                            <Typography variant="subtitle1" noWrap>
                                                 {item.title}
                                             </Typography>
-                                            <Typography variant="body2">Precio: S/ {item.price.toFixed(2)}</Typography>
-                                            <Typography variant="body2">Cantidad: {item.quantity}</Typography>
-                                            <Typography variant="body2" fontWeight="bold">
+                                            <Typography variant="body2">
+                                                Precio: S/ {item.price.toFixed(2)}
+                                            </Typography>
+                                            <Box mt={1} display="flex" alignItems="center" gap={1}>
+                                                <IconButton size="small" onClick={() => decreaseItemQuantity(item.id)}>
+                                                    <Remove />
+                                                </IconButton>
+                                                <Typography>{item.quantity}</Typography>
+                                                <IconButton size="small" onClick={() => addItem({ ...item, quantity: 1 })}>
+                                                    <Add />
+                                                </IconButton>
+                                            </Box>
+                                            <Typography fontWeight="bold">
                                                 Subtotal: S/ {(item.price * item.quantity).toFixed(2)}
                                             </Typography>
                                         </CardContent>
-                                        <Box textAlign="right" pr={2} pb={1}>
-                                            <IconButton onClick={() => removeItem(item.id)} color="error">
-                                                <Delete />
-                                            </IconButton>
-                                        </Box>
                                     </Box>
+                                    <IconButton onClick={() => removeItem(item.id)} color="error">
+                                        <Delete />
+                                    </IconButton>
                                 </Card>
                             </Grid>
                         ))}
                     </Grid>
 
-                    <Divider sx={{ my: 4 }} />
+                    <Divider sx={{ my: 3 }} />
 
-                    <Box textAlign="right" mb={2}>
-                        <Typography variant="h6" fontWeight="bold">
-                            Total: S/ {getTotal().toFixed(2)}
-                        </Typography>
-                    </Box>
-
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end">
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
                         <Button variant="outlined" color="error" onClick={clearCart}>
                             Empty cart
                         </Button>
+                        <Typography variant="h6" fontWeight="bold">
+                            Total: S/ {getTotal().toFixed(2)}
+                        </Typography>
                         <Button variant="contained" color="primary" onClick={handleCheckout}>
                             Let's go to checkout
                         </Button>
-                    </Stack>
+                    </Box>
                 </>
             )}
         </Box>
