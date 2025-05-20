@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# eCommerce App – React + Vite + TypeScript
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a fully functional eCommerce web application built with **React**, **Vite**, and **TypeScript**.  
+The app allows users to:
 
-Currently, two official plugins are available:
+- Browse a list of products
+- Filter by **name**, **category**, and **price range**
+- Sort products by **price**, **rating**, or **number of reviews**
+- View detailed product information
+- Add products to a **shopping cart** with quantity control
+- See **related products** by category
+- **Persist cart data** even after page refresh or browser close
+- **Login** using real user credentials from FakeStoreAPI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 **Live Demo**: [https://e-commerce-with-react-2604.vercel.app](https://e-commerce-with-react-2604.vercel.app)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Test Users
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+You can log in with the following test accounts:
+
+| Username     | Password  |
+|--------------|-----------|
+| mor_2314     | 83r5^_    |
+| johnd        | m38rmF$   |
+| donero       | eweds123  |
+| kminchelle   | 0lelplR   |
+
+These credentials are from [https://fakestoreapi.com/users](https://fakestoreapi.com/users)
+
+---
+
+## Tech Stack
+
+- **React** + **Vite** + **TypeScript**
+- **Material UI (MUI)** for modern UI components
+- **React Router DOM** for routing
+- **Context API** for auth and cart management
+- **localStorage** for cart persistence
+- **Vercel** for deployment
+
+---
+
+## How to Run Locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+```
+### 2. Install dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Start the development server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+Open your browser and navigate to `http://localhost:5173` to see the app in action.
+
+## Deployment
+The app is deployed on Vercel. You can view the live demo at [https://e-commerce-with-react-2604.vercel.app](https://e-commerce-with-react-2604.vercel.app).
+
+Enviroment variables are set in Vercel for production build. (`VITE_API_URL`)
+
+---
+## Features to improve
+- Add unit tests for components and functions
+- Implement a more robust state management solution (e.g., Redux)
+- Payment gateway integration
+- User profile & order history
+- Product pagination
+- Better form validations
+
+---
+Feel free to fork or contribute to the project.
+
+---
+## License
+Let me know if you'd like a badge for Vercel or GitHub Actions added at the top.
+
